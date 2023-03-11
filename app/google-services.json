@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "292746785326",
+    "firebase_url": "https://jeju-thorbox-default-rtdb.firebaseio.com",
+    "project_id": "jeju-thorbox",
+    "storage_bucket": "jeju-thorbox.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292746785326:android:e97f4d2ccebcd4da7e65bf",
+        "android_client_info": {
+          "package_name": "com.example.connect_practice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292746785326-tmvtivmkil0hvark6regpop6ij1pumsb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpN1opVq5d21spIdseAHVXPmFP1y6atsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "292746785326-tmvtivmkil0hvark6regpop6ij1pumsb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292746785326:android:5051c03bd76c9a907e65bf",
+        "android_client_info": {
+          "package_name": "com.example.jeju"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292746785326-tmvtivmkil0hvark6regpop6ij1pumsb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpN1opVq5d21spIdseAHVXPmFP1y6atsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "292746785326-tmvtivmkil0hvark6regpop6ij1pumsb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

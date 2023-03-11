@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">jeju</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="my_map_api_key">AIzaSyBlweiH9CqyyfxpT6DWoV6YzZsttHcc6i8</string>
+</resources>
