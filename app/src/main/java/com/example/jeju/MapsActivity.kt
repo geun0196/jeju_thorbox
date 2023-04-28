@@ -71,7 +71,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //버튼 클릭 이벤트
         /////////////////////////////////////////////////////
         binding.button.setOnClickListener {
-            val latLng = LatLng(latitude, longitude)
+            val latLng = LatLng(latitude1, longitude1)
 
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f))
         }
@@ -89,19 +89,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
 
-     var latitude: Double = 0.0
-     var longitude: Double = 0.0
+    var latitude1: Double = 0.0
+    var longitude1: Double = 0.0
+     var latitude2: Double = 0.0
+     var longitude2: Double = 0.0
 
-    fun updateGPSData(){
-        val database : FirebaseDatabase = FirebaseDatabase.getInstance()
-        val myRef_latitude : DatabaseReference = database.getReference("gps_latitude")
+    fun updateGPSData1(){
+        val database: DatabaseReference
+        database = Firebase.database.reference.child("box_number").child("1")
 
-        myRef_latitude.addValueEventListener(object: ValueEventListener {
+        database.child("gps_latitude").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 //값이 변경된게 있으면 database의 값이 갱신되면 자동 호출된다.
                 var latitude_string = snapshot.value.toString()
-                latitude = latitude_string.toDouble()
-                moveMap(latitude, longitude)
+                latitude1 = latitude_string.toDouble()
+                moveMap()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -109,14 +111,43 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         })
 
-        val myRef_longitude : DatabaseReference = database.getReference("gps_longitude")
-
-        myRef_longitude.addValueEventListener(object: ValueEventListener {
+        database.child("gps_longitude").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 //값이 변경된게 있으면 database의 값이 갱신되면 자동 호출된다.
                 var longitude_string = snapshot.value.toString()
-                longitude = longitude_string.toDouble()
-                moveMap(latitude, longitude)
+                longitude1 = longitude_string.toDouble()
+                moveMap()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("Failed to read value.")
+            }
+        })
+    }
+
+    fun updateGPSData2(){
+        val database: DatabaseReference
+        database = Firebase.database.reference.child("box_number").child("2")
+
+        database.child("gps_latitude").addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                //값이 변경된게 있으면 database의 값이 갱신되면 자동 호출된다.
+                var latitude_string = snapshot.value.toString()
+                latitude2 = latitude_string.toDouble()
+                moveMap()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("Failed to read value.")
+            }
+        })
+
+        database.child("gps_longitude").addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                //값이 변경된게 있으면 database의 값이 갱신되면 자동 호출된다.
+                var longitude_string = snapshot.value.toString()
+                longitude2 = longitude_string.toDouble()
+                moveMap()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -126,13 +157,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     var cnt = 0
-    fun moveMap(latitude: Double, longitude: Double){
-        val latLng = LatLng(latitude, longitude)
+    fun moveMap(){
+        val latLng1 = LatLng(latitude1, longitude1)
+        val latLng2 = LatLng(latitude2, longitude2)
 
         mMap.clear()
-        mMap.addMarker(MarkerOptions().position(latLng).title("box"))
+        mMap.addMarker(MarkerOptions().position(latLng1).title("box1"))
+        mMap.addMarker(MarkerOptions().position(latLng2).title("box2"))
+
         if(cnt < 3){
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng1, 15f))
             cnt++
         }
     }
@@ -144,7 +178,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
          thread(start=true){
              while(true){
                  Thread.sleep(2000)
-                 updateGPSData()
+                 updateGPSData1()
+                 updateGPSData2()
              }
          }
     }
