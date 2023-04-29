@@ -1,7 +1,6 @@
 package com.example.jeju
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.jeju.databinding.ActivityMapsBinding
@@ -9,7 +8,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
@@ -39,36 +37,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val database: DatabaseReference
         database = Firebase.database.reference.child("box_number")
 
-        val one_box_database = database.child("1")
-
-        one_box_database.child("weight").addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                //값이 변경된게 있으면 database의 값이 갱신되면 자동 호출된다.
-                val weight = snapshot.value.toString()
-                binding.weight.setText("$weight kg")
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                println("Failed to read value.")
-            }
-        })
-
-        val two_box_database = database.child("2")
-
-        two_box_database.child("weight").addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                //값이 변경된게 있으면 database의 값이 갱신되면 자동 호출된다.
-                val weight = snapshot.value.toString()
-                binding.weight2.setText("$weight kg")
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                println("Failed to read value.")
-            }
-        })
+        addValueEventListener(database,"1", binding.weight)
+        addValueEventListener(database,"2", binding.weight2)
 
         /////////////////////////////////////////////////////
         //버튼 클릭 이벤트
+        //=> 클릭시 일단은 1번 카트로 카메라 움직이게 해놨음. 추후 수정해야함
         /////////////////////////////////////////////////////
         binding.button.setOnClickListener {
             val latLng = LatLng(latitude1, longitude1)
@@ -78,21 +52,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    fun addValueEventListener(database: DatabaseReference, boxNumber: String, textView: TextView) {
+        database.child(boxNumber).child("weight").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val weight = snapshot.value.toString()
+                textView.text = "$weight kg"
+            }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+            override fun onCancelled(error: DatabaseError) {
+                println("Failed to read value.")
+            }
+        })
+    }
 
     var latitude1: Double = 0.0
     var longitude1: Double = 0.0
-     var latitude2: Double = 0.0
-     var longitude2: Double = 0.0
+    var latitude2: Double = 0.0
+    var longitude2: Double = 0.0
 
     fun updateGPSData1(){
         val database: DatabaseReference
