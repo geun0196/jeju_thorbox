@@ -1,6 +1,7 @@
 package com.example.jeju
 
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.jeju.databinding.ActivityMapsBinding
@@ -49,9 +50,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //=> 클릭시 일단은 1번 카트로 카메라 움직이게 해놨음. 추후 수정해야함
         /////////////////////////////////////////////////////
         binding.button.setOnClickListener {
-            val latLng = LatLng(boxList[0].latitude, boxList[0].longitude)
+            if (binding.findBoxEditText.text.toString().isEmpty()) {
+                binding.findBoxEditText.setHint("박스 번호를 입력해주세요!")
+            } else {
+                var box_num = binding.findBoxEditText.text.toString().toInt()
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,18f))
+                if (box_num == 1 || box_num == 2) {
+                    val latLng = LatLng(boxList[box_num - 1].latitude, boxList[box_num - 1].longitude)
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
+                } else {
+                    binding.findBoxEditText.setText("")
+                    binding.findBoxEditText.setHint("1번과 2번만 가능합니다.")
+                }
+            }
         }
 
     }
